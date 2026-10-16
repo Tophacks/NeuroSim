@@ -53,7 +53,7 @@ def main():
     env = gym.make(ENV_ID)
     try:
         model = PPO("MlpPolicy", env, verbose=1, device="cpu", tensorboard_log="logs")
-        callbacks = [CheckpointCallback(save_freq=max(1, args.checkpoint_every // env.num_envs), save_path="checkpoints", name_prefix="ppo_lander")]
+        callbacks = [CheckpointCallback(save_freq=max(1, args.checkpoint_every // model.get_env().num_envs), save_path="checkpoints", name_prefix="ppo_lander")]
         if args.preview_every:
             callbacks.append(PreviewCallback(args.preview_every))
         model.learn(total_timesteps=args.steps, callback=CallbackList(callbacks))
